@@ -13,14 +13,14 @@
 
 Girder::Girder(double z, double t, double r, double p, double e, double d,
 		double v, double w) {
-	this->z = z;
-	this->t = t;
-	this->r = r;
-	this->p = p;
-	this->e = e;
-	this->d = d;
-	this->v = v;
-	this->w = w;
+	this->z = z; // czas załadunku
+	this->t = t; // czas transportu na czas budowy
+	this->r = r; // czas rozładunku na placu budowy
+	this->p = p; // czas powrotu
+	this->e = e; // żądany najwcześniejszy termin przywozu
+	this->d = d; // żądany najpóźniejszy termin przywozu
+	this->v = v; // wsp. f. kary za zbyt wczesne przybycie
+	this->w = w; // wsp. f. kary za zbyt późne przybycie
 }
 
 double Girder::countCost(double s) {
@@ -68,8 +68,10 @@ vector<double> GirderSchedule::findDeliverTime(vector<int> &order) {
 	vector<double> deliverTime;
 	deliverTime.resize(order.size());
 	for(int i=0; i< order.size(); i++){
+		printf("%d ", order[i]);
 		deliverTime[i] = order[i];
 	}
+	printf("\n");
 	return deliverTime;
 
 }
