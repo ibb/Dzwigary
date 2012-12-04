@@ -4,7 +4,8 @@
 
 \usetheme{CambridgeUS}
 \usecolortheme{seagull}
-\setbeameroption{show notes}
+% \setbeameroption{show notes}
+
 
 \title[Transport dźwigarów w systemie JIT]
 {Problem optymalnego transportu dźwigarów w systemie Just in Time}
@@ -107,7 +108,7 @@ Wrocławskiego}
  
  \begin{block}{Terminy $S_1, S_2,...,S_n $ muszą spełniać następujące ograniczenia}
  \begin{itemize}
-    \note[item]{Na ewolucyjne trzeba to wyrzucić i trzeba wymyśleć co zrobimy z ograiczeniami na PO}
+    \note[item]{Na ewolucyjne trzeba to wyrzucić i trzeba wymyśleć co zrobimy z ograniczeniami na PO}
     \item załadunek pierwszego dźwigara $B_i$ rozpoczyna się w chwili 0
     \begin{equation}\label{eq:ZeroStart}
      S_1 \ge z_1 + t_1 
@@ -167,7 +168,7 @@ Wrocławskiego}
  
  \begin{block}{Kryterium optymalizacyjne}
   \begin{equation}
-   F(S) = \sum{i=1}{n}(u_iE_i + w_iT_i) 
+   F(S) = \sum\limits_{i=1}^{n}(u_iE_i + w_iT_i) 
   \end{equation}
  \end{block}
 
@@ -213,44 +214,44 @@ Wrocławskiego}
 
 % ***************************************************** Algorytm Konstrukcyjny *********************************************************************
 
-
-\section{Algorytm Konstrukcyjny}
-
-\begin{frame}
-
-\frametitle{Pojęcia i twierdzenia}
-
-\begin{enumerate}
- \item Posortiwać dźwigary zgodnie z najpóźniejszy terminem przywozu
- \item Znaleźć podział na bloki dla zadanej kolejności
- \item Znaleźć optymalny czas dostawy dla każdego dźwigara
-\end{enumerate}
-
-\end{frame}
-
-
-
-\begin{frame}
-
-\frametitle{Podział na bloki}
-
-\end{frame}
-
-
-\begin{frame}
-
-\frametitle{Znajdowanie optymalnego czasu}
-
-\end{frame}
-
-
-% ***************************************************** Wpływ ograniczeń na złożoność czasową *********************************************************************
-\section{Wpływ ograniczeń na złożoność czasową}
-
-\begin{frame}
- \frametitle{Wpływ ograniczeń na złożoność czasową}
- ??????????????????
-\end{frame}
+% 
+% \section{Algorytm Konstrukcyjny}
+% 
+% \begin{frame}
+% 
+% \frametitle{Algorytm Konstrukcyjny}
+% 
+% \begin{enumerate}
+%  \item Posortować dźwigary zgodnie z najpóźniejszym terminem przywozu
+%  \item Znaleźć podział na bloki dla zadanej kolejności
+%  \item Znaleźć optymalny czas dostawy dla każdego dźwigara
+% \end{enumerate}
+% 
+% \end{frame}
+% 
+% 
+% 
+% \begin{frame}
+% 
+% \frametitle{Podział na bloki}
+% 
+% \end{frame}
+% 
+% 
+% \begin{frame}
+% 
+% \frametitle{Znajdowanie optymalnego czasu}
+% 
+% \end{frame}
+% 
+% 
+% % ***************************************************** Wpływ ograniczeń na złożoność czasową *********************************************************************
+% \section{Wpływ ograniczeń na złożoność czasową}
+% 
+% \begin{frame}
+%  \frametitle{Wpływ ograniczeń na złożoność czasową}
+%  ??????????????????
+% \end{frame}
 
 % *************************************************************Algorytm Ewolucyjny **********************************************************************
 
@@ -267,8 +268,138 @@ Wrocławskiego}
 
 \begin{frame}
  \frametitle{Inicjalizacja}
+ \begin{description}
+  \item[\textbf{Opcja 1:}] losowe permutacje
+  \item[\textbf{Opcja 2:}] dźwidary posortowane według czasu początkowego, czasu końcowego, średniej z tych czasów plus losowe osobniki
+  \item[\textbf{Opcja 3:}]  dźwigary posortowane według czasu początkowego, czasu końcowego, średniej z tych czasów i mutacje tych osobników
+  \end{description}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Selekcja}
+ \begin{itemize}
+  \item osobniki są losowo łączone w pary i dla każdej pary przeprowadzana jest mutacja
+ \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{Krzyżowanie - Uniform order based crossover}
+\begin{center}
+\begin{tabular}{lllllllll}
+Rodzic 1: & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8\\
+Rodzic 2: & 6 & 8 & 1 & 2 & 4 & 3 & 7 & 5\\
+Wektor Binarny & 1 & 0 & 1 & 1 & 1 & 0 & 0 & 1
+\end{tabular}
+\end{center}
+
+ 
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{Krzyżowanie - Uniform order based crossover}
+ Wybieramy numery genów zgodnie z wektorem binarnym
+\begin{center}
+\begin{tabular}{lllllllll}
+Rodzic 1: & 1 & {\color{red}2}& 3 & 4 & 5 & {\color{red}6} & {\color{red}7} & 8\\
+Wektor Binarny & 1 & {\color{red}0}& 1 & 1 & 1 & {\color{red}0} & {\color{red}0} & 1 \\
+Dziecko 1: & \_ & {\color{red}2} & \_ & \_ & \_ & {\color{red}6} & {\color{red}7} & \_\\ \\
+Rodzic 2: & {\color{red}6} & 8 & {\color{red}1} & {\color{red}2} & {\color{red}4} & 3 & 7 & {\color{red}5}\\
+Wektor Binarny & {\color{red}1} & 0 &{\color{red}1}  & {\color{red}1} & {\color{red}1} & 0 & 0 & {\color{red}1} \\
+Dziecko 2: & {\color{red}6} & \_ & {\color{red}1} & {\color{red}2} & {\color{red}4} & \_ & \_ & {\color{red}5}\\
+\end{tabular}
+\end{center}
+
+ 
+
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Krzyżowanie - Uniform order based crossover}
+ Z zodzica 1  usuwamy wszystkie geny które są w dziecku 2 a z rodzica 2 wszystkie geny które są w dziecku 1
+\begin{center}
+\begin{tabular}{lllllllll}
+Rodzic 1: & {\color{red}1} & {\color{red}2}& 3 & {\color{red}4} & {\color{red}5} & {\color{red}6} & 7 & 8\\
+Dziecko 2: & {\color{red}6} & \_ & {\color{red}1} & {\color{red}2} & {\color{red}4} & \_ & \_ & {\color{red}5}\\ \\
+
+Rodzic 2: & {\color{red}6} & 8 & 1 & {\color{red}2} & 4 & 3 & {\color{red}7} & 5\\
+Dziecko 1: & \_ & {\color{red}2} & \_ & \_ & \_ & {\color{red}6} & {\color{red}7} & \_\\
+
+
+\end{tabular}
+\end{center}
+
+ 
+
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Krzyżowanie - Uniform order based crossover}
+ Nieusunięte geny z rodziców przepisujemy do dzieci nie zmieniając ich kolejności
+ 
+ \begin{center}
+ \includegraphics[scale=0.5]{./Grafika/crossover.jpg}
+ % crossover.jpg: 624x226 pixel, 72dpi, 22.01x7.97 cm, bb=0 0 624 226
+\end{center}
+
+ 
+
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Mutacja}
+
+ Dla każdego osobnika z niewielkim prawdopodobieństwem $ \theta_1 $ zamieniamy dwa losowe geny.
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{Poszukiwanie lokalne}
+ 
+ Dla najlepszego osobnika uruchamiamy heurystykę bazującą na algorytmie NEH
+
+
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{ Heurystyka NEH}
+ \begin{enumerate}
+  \item Z danego osobnika weź pierwsze dwa geny i znajdź dla nich kolejność minimalizującą funkcję celu
+  \item Dla osobnika o długości od 3 do N wykonuj następującą operację:
+  \begin{itemize}
+   \item Wstaw k-ty gen w taki sposób pomiędzy k-1 genów aby zminimalizować funkcję celu dla osobnika o k genach
+  \end{itemize}
+ \end{enumerate}
+ \end{frame}
  
  
+ 
+ \begin{frame}
+ \frametitle{ Ewaluacja }
+ \begin{itemize}
+  \item Znajdź podział na bloki dla zadanej kolejności dźwigarów
+  \item Znajdź optymalne czasy dostawy dźwigarów dla zadanej kolejności
+  \item Funkcją celu jest wartość kary za nieterminowe dostarczenie dźwigarów
+ \end{itemize}
+ 
+ \end{frame}
+ 
+ 
+ \begin{frame}
+ \frametitle{ Tworzenie nowej populacji }
+ Z sumy populacji N rodziców i N dzieci stwórz populację składającą się z N najlepszych osobników
+
+\end{frame}
+
+
+ \begin{frame}
+ \frametitle{ Warunek zakończenia algorytmu }
+Jeżeli przez D populacji nie nastąpi polepszenie funkcji celu zakończ działanie algorytmu
 
 \end{frame}
 
