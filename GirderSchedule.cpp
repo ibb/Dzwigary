@@ -60,20 +60,17 @@ int GirderSchedule::getNumber() {
 	return this->number;
 }
 
-vector<double> GirderSchedule::findDeliverTime(vector<int> &order) {
-	//Krzysiu, uzupełnij prosze tę funkcję
-	//Na razie zwraca ona fikcyje wartości w celu testowania całego programu
-	// Weź pod uwagę, że długości order może być mniejsza od ilości dzwigarów,
-	//potrzebne jest to do naszej wersji przeszukiwania lokalnego
+vector<double> GirderSchedule::findDeliverTime(vector<int> &order)
+{
 	vector<double> deliverTime;
+
 	deliverTime.resize(order.size());
-	for(int i=0; i< order.size(); i++){
-		printf("%d ", order[i]);
+	for(int i=0; i< order.size(); i++)
+	{
 		deliverTime[i] = order[i];
 	}
-	printf("\n");
-	return deliverTime;
 
+	return deliverTime;
 }
 
 void GirderSchedule::print() {
