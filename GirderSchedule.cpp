@@ -11,6 +11,10 @@
 
 #include "GirderSchedule.hpp"
 
+Girder::Girder()
+{
+}
+
 Girder::Girder(double z, double t, double r, double p, double e, double d,
 		double v, double w) {
 	this->z = z; // czas załadunku
@@ -35,7 +39,7 @@ void Girder::print() {
 			<< endl;
 }
 
-GirderSchedule::GirderSchedule(char* fileName) {
+GirderSchedule::GirderSchedule(const char* fileName) {
 	double z, t, r, p, e, d, v, w;
 	ifstream infile(fileName);
 	infile >> (this->number);
@@ -47,11 +51,13 @@ GirderSchedule::GirderSchedule(char* fileName) {
 
 double GirderSchedule::countCost(vector<double> &S) {
 	// S = (s_1,s_2,  ,s_k) is a vector where si is a term for ith girder
-	// k can be < than n
-	int num = S.size();
+	int num = number;
 	double cost = 0;
 	for (int i = 0; i < num; i++) {
-		cost += this->Girders[i].countCost(S[i]);
+		if(S[i]!=-1)
+		{
+			cost += this->Girders[i].countCost(S[i]);
+		}
 	}
 	return cost;
 }
@@ -62,15 +68,102 @@ int GirderSchedule::getNumber() {
 
 vector<double> GirderSchedule::findDeliverTime(vector<int> &order)
 {
-	vector<double> deliverTime;
+	Girder G;
+	double bestDeliverCost, currentDeliverCost;
+	vector<double> lastIterationBestDeliverTime, bestDeliverTime, currentDeliverTime;
 
-	deliverTime.resize(order.size());
-	for(int i=0; i< order.size(); i++)
+	lastIterationBestDeliverTime.resize(Girders.size());
+	bestDeliverTime.resize(Girders.size());
+	currentDeliverTime.resize(Girders.size());
+	
+	// Rozważamy sytuację, w której mamy tylko jeden dźwigar do rozpatrzenia
+	for (int i = 0; i < lastIterationBestDeliverTime.size(); i++)
+		lastIterationBestDeliverTime[i] = -1;
+	if (order.size() == 0) return lastIterationBestDeliverTime;
+	// Ustawiamy go tak, aby wypadł na początku okienka lub od czasu zerowego.
+	G = Girders[order[0]];
+	lastIterationBestDeliverTime[order[0]] = max(G.z + G.t + G.r, G.e);
+	
+	// Ustawiamy i+1 pierwszych dźwigarów (od 0 do i)
+	for(int i = 1; i < Girders.size(); i++)
 	{
-		deliverTime[i] = order[i];
+		// Jeśli da się ustawić i-te zadanie bez przeszkód to ustawiamy i kończymy
+		G = Girders[order[i]];
+		if (lastIterationBestDeliverTime[order[i-1]] + Girders[order[i-1]].p + G.z + G.t + G.r <= G.d)
+		{
+			lastIterationBestDeliverTime[order[i]] = max(G.e, lastIterationBestDeliverTime[order[i-1]] + Girders[order[i-1]].p + G.z + G.t + G.r);
+//printf("Ustawiam je sobie, bo mogę.\n");
+		}
+		else
+		{
+			// Po pierwsze spróbujemy je ustawić od 0 po kolei
+			for (int j = 0; j < bestDeliverTime.size(); j++)
+				bestDeliverTime[j] = -1;
+			float c = 0;
+			for (int j = 0; j <= i; j++)
+			{
+				G = Girders[order[j]];
+				bestDeliverTime[order[j]] = c + G.z + G.t + G.r;
+				c += G.z + G.t + G.r + G.p;
+			}
+			bestDeliverCost = countCost(bestDeliverTime);
+//printf("Pocz: ");
+//for (int m = 0; m < bestDeliverTime.size(); m++) printf("%lf ", bestDeliverTime[m]); printf("\n");
+			for (int j = 0; j <= i; j++)
+			{
+				// Próbujemy tak ustawić czasy, aby zadanie j-te zostało wykonane w czasie.
+				
+				// Skopiuj wynik z poprzedniej iteracji:
+				for (int k = 0; k < Girders.size(); k++)
+					currentDeliverTime[k] = lastIterationBestDeliverTime[k];
+				
+				// Ustaw j-te zadanie na czas d oraz e
+				float possibilities[] = {Girders[order[j]].e, Girders[order[j]].d};
+				
+				for (int z = 0; z < 2; z++)
+				{
+					currentDeliverTime[order[j]] = possibilities[z];
+					
+					// Zadania po nim - w ogonku
+					c = currentDeliverTime[order[j]] + Girders[order[j]].p;
+					for (int k = j+1; k <= i; k++)
+					{
+						G = Girders[order[k]];
+						currentDeliverTime[order[k]] = c + G.z + G.t + G.r;
+						c += G.z + G.t + G.r + G.p;
+					}
+					
+					// Zadania przed nim spychamy w lewo.
+					int k = j-1;
+					G = Girders[order[k+1]];
+					while (k >= 0 && currentDeliverTime[order[k]] + Girders[order[k]].p > currentDeliverTime[order[k+1]] - G.z - G.t - G.r)
+					{
+						currentDeliverTime[order[k]] = currentDeliverTime[order[k+1]] - G.z - G.t - G.r - Girders[order[k]].p;
+						G = Girders[order[k]];
+						k--;
+					}
+					
+					// Sprawdzamy czy to rozwiązanie jest lepsze niż wcześniej znalezione
+					currentDeliverCost = countCost(currentDeliverTime);
+					G = Girders[order[0]];
+					if (currentDeliverTime[order[0]] - G.z -G.t - G.r  >= 0 && currentDeliverCost < bestDeliverCost)
+					{
+						bestDeliverCost = currentDeliverCost;
+						for (int k = 0; k <= i; k++)
+							bestDeliverTime[k] = currentDeliverTime[k];
+					}
+//printf("Current: ");
+//for (int m = 0; m < bestDeliverTime.size(); m++) printf("%lf ", currentDeliverTime[m]); printf("\n");
+				}
+			}
+			// Kopiujemy najlepszy znaleziony jako najlepszy z danej iteracji
+			for (int j = 0; j < Girders.size(); j++)
+				lastIterationBestDeliverTime[j] = bestDeliverTime[j];
+		}
+//printf("Best: ");
+//for (int j = 0; j < bestDeliverTime.size(); j++) printf("%lf ", lastIterationBestDeliverTime[j]); printf("\n");
 	}
-
-	return deliverTime;
+	return lastIterationBestDeliverTime;
 }
 
 void GirderSchedule::print() {

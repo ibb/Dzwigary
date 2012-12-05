@@ -25,12 +25,15 @@ private:
 	double w;
 
 public:
+	Girder();
 	Girder(double z, double t, double r, double p, double e, double d,
 			double v, double w);
 
 	double countCost(double s);
 
 	void print();
+	
+	friend class GirderSchedule;
 };
 
 
@@ -39,7 +42,7 @@ private:
 	int number;
 	vector<Girder> Girders;
 public:
-	GirderSchedule(char* fileName);
+	GirderSchedule(const char* fileName);
 
 	double countCost(vector<double> &S);
 	int getNumber();

@@ -8,6 +8,7 @@
 #include <fstream>
 #include <cassert>
 #include <cstdlib>
+#include <cstring>
 
 #include "GirderSchedule.hpp"
 #include "randUtils.hpp"
@@ -19,13 +20,26 @@ int main(int argc, char *argv[]) {
 
 	if (argc != 2)
 		cout << "usage: " << argv[0] << " <filename>\n";
-	else {
-		srand(time(NULL));
-		GirderSchedule *GS = new GirderSchedule(argv[1]);
+	else
+	{
+		if (!strcmp("debugmode", argv[1]))
+		{
+			vector<int> O;
+			GirderSchedule GS("In/1.in");
+			
+			for (int i = 0; i < 4; i++)
+				O.push_back(i);
+			
+			GS.findDeliverTime(O);
+		}
+		else
+		{
+			srand(time(NULL));
+			GirderSchedule *GS = new GirderSchedule(argv[1]);
 
-		Environment *env = new Environment(GS, 6, 100, 0.1);
-		env->run();
-
+			Environment *env = new Environment(GS, 6, 100, 0.1);
+			env->run();
+		}
 	}
 
 	return 0;
