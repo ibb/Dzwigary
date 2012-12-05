@@ -382,11 +382,26 @@ Dziecko 1: & \_ & {\color{red}2} & \_ & \_ & \_ & {\color{red}6} & {\color{red}7
  \begin{frame}
  \frametitle{ Ewaluacja }
  \begin{itemize}
-  \item Znajdź podział na bloki dla zadanej kolejności dźwigarów
-  \item Znajdź optymalne czasy dostawy dźwigarów dla zadanej kolejności
-  \item Funkcją celu jest wartość kary za nieterminowe dostarczenie dźwigarów
+  \item Algorytm przyrostowy
+  \item Próbujemy umieścić $i$-ty dźwigar w okienku
+  \item Jeśli to nie możliwe, kładziemy go zaraz po dźwigarze $i-1$.
+  \item Przesuwamy cały blok w lewo, aż nie znajdziemy minimum
  \end{itemize}
  
+ \end{frame}
+ 
+ \begin{frame}
+ \frametitle{ Ewaluacja }
+ \begin{center}
+  \includegraphics[width=8cm]{Grafika/wykres1.png}
+ \end{center}
+ \end{frame}
+ 
+ \begin{frame}
+ \frametitle{ Ewaluacja }
+ \begin{center}
+  \includegraphics[width=8cm]{Grafika/wykres2.png}
+ \end{center}
  \end{frame}
  
  
