@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 
 #include "GirderSchedule.hpp"
 
@@ -31,6 +32,20 @@ double Girder::countCost(double s) {
 	double E = max(0.0, e - s);
 	double T = max(0.0, s - d);
 	return v * E + w * T;
+}
+
+bool Girder::cmpD(pair<Girder,int > a, pair<Girder,int > b){
+return a.first.d < b.first.d;
+}
+
+bool Girder::cmpE(pair<Girder,int > a, pair<Girder,int > b){
+return a.first.e < b.first.e;
+}
+
+bool Girder::cmpED(pair<Girder,int > a, pair<Girder,int > b){
+double meanA = a.first.d - a.first.e;
+double meanB = b.first.d - b.first.e;
+return meanA < meanB;
 }
 
 void Girder::print() {
@@ -85,7 +100,7 @@ vector<double> GirderSchedule::findDeliverTime(vector<int> &order)
 	lastIterationBestDeliverTime[order[0]] = max(G.z + G.t + G.r, G.e);
 	
 	// Ustawiamy i+1 pierwszych dźwigarów (od 0 do i)
-	for(int i = 1; i < Girders.size(); i++)
+	for(int i = 1; i < order.size(); i++)
 	{
 		// Jeśli da się ustawić i-te zadanie bez przeszkód to ustawiamy i kończymy
 		G = Girders[order[i]];
@@ -164,6 +179,32 @@ vector<double> GirderSchedule::findDeliverTime(vector<int> &order)
 //for (int j = 0; j < bestDeliverTime.size(); j++) printf("%lf ", lastIterationBestDeliverTime[j]); printf("\n");
 	}
 	return lastIterationBestDeliverTime;
+}
+
+vector<int> GirderSchedule::sortGirders(bool (*cmpfun)(pair<Girder,int>, pair<Girder,int>)){
+	vector<pair<Girder,int> > tmp;
+	vector<int> sorted;
+	for(int i=0; i<this->number; i++){
+		tmp.push_back(make_pair(this->Girders[i],i));
+	}
+	sort(tmp.begin(),tmp.end(),cmpfun);
+	for(int i=0; i<this->number; i++){
+			sorted.push_back(tmp[i].second);
+		}
+	return sorted;
+
+}
+
+vector<int> GirderSchedule::minDTime(){
+	return this->sortGirders(Girder::cmpD);
+}
+
+vector<int> GirderSchedule::minETime(){
+	return this->sortGirders(Girder::cmpE);
+}
+
+vector<int> GirderSchedule::minEDTime(){
+	return this->sortGirders(Girder::cmpED);
 }
 
 void GirderSchedule::print() {

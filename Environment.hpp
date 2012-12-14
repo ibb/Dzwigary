@@ -10,6 +10,10 @@
 #ifndef ENVIRONMENT_HPP_
 #define ENVIRONMENT_HPP_
 
+typedef enum
+{ RANDOM,SPECIALIND
+}Initialisation;
+
 class Environment{
 private:
 	GirderSchedule *GS;
@@ -18,8 +22,9 @@ private:
 	int iterationNumber;
 	double mutateRate;
 	double minValue;
+	Initialisation initialisation;
 public:
-	Environment(GirderSchedule *GS, int populationSize, int maxIteration, double mutateRate);
+	Environment(GirderSchedule *GS, int populationSize, int maxIteration, double mutateRate, Initialisation m);
 	int individualLength();
 
 	void run();

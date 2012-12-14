@@ -30,6 +30,9 @@ public:
 			double v, double w);
 
 	double countCost(double s);
+	bool static cmpD(pair<Girder,int > a, pair<Girder,int > b);
+	bool static cmpE(pair<Girder,int > a, pair<Girder,int > b);
+	bool static cmpED(pair<Girder,int > a, pair<Girder,int > b);
 
 	void print();
 	
@@ -47,6 +50,10 @@ public:
 	double countCost(vector<double> &S);
 	int getNumber();
 	vector<double> findDeliverTime(vector<int> &order);
+	vector<int> minDTime();
+	vector<int> minETime();
+	vector<int> minEDTime();
+	vector<int> sortGirders(bool (*cmpfun)(pair<Girder,int>, pair<Girder,int>));
 	void print();
 
 };

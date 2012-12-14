@@ -13,10 +13,23 @@
 
 using namespace std;
 
-Population::Population(Environment *env, int size) {
+Population::Population(Environment *env, int size, Initialisation m) {
 	this->size = size;
 	this->env = env;
-	for (int i = 0; i < this->size; i++) {
+
+	int sind = 0;
+	if( m == SPECIALIND){
+		vector<int> order;
+		GirderSchedule *GS = env->getGirderSchedule();
+		order = GS->minDTime();
+		individuals.push_back(Individual(env,order));
+		order = GS->minETime();
+		individuals.push_back(Individual(env,order));
+		order = GS->minEDTime();
+		individuals.push_back(Individual(env,order));
+		sind = 3;
+	}
+	for (int i = 0; i < this->size-sind; i++) {
 		individuals.push_back(Individual(env));
 	}
 }

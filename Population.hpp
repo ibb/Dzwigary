@@ -19,7 +19,7 @@ private:
 	int size;
 	Environment *env;
 public:
-	Population(Environment *env, int size);
+	Population(Environment *env, int size, Initialisation m);
 	void crossover();
 	void evaluate();
 	void mutate(double mutationtRate);

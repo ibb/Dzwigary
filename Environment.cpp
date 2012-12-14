@@ -10,13 +10,14 @@
 #include "Population.hpp"
 
 Environment::Environment(GirderSchedule *GS, int populationSize,
-		int maxIteration, double mutateRate) {
+		int maxIteration, double mutateRate, Initialisation m) {
 	this->GS = GS;
 	this->populationSize = populationSize;
 	this->maxIteration = maxIteration;
 	this->iterationNumber = 0;
 	this->mutateRate = mutateRate;
 	this->minValue = -1;
+	this->initialisation = m;
 
 	assert(populationSize % 2 == 0);
 }
@@ -25,7 +26,7 @@ int Environment::individualLength() {
 }
 
 void Environment::run() {
-	Population *population = new Population(this, populationSize);
+	Population *population = new Population(this, populationSize,this->initialisation);
 	while (terminationCondition()) {
 		population->crossover();
 		population->mutate(this->mutateRate);
