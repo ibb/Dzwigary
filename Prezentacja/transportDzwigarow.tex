@@ -2,7 +2,7 @@
 \usepackage{polski}
 \usepackage[utf8]{inputenc}
 
-\usetheme{CambridgeUS}
+\usetheme{intridea}
 \usecolortheme{seagull}
 % \setbeameroption{show notes}
 
@@ -113,11 +113,11 @@ Wrocławskiego}
     \begin{equation}\label{eq:ZeroStart}
      S_1 \ge z_1 + t_1 
     \end{equation}
-    \item dźwigary należy dostarczyć zgodnie z kolejnością montażu 
-    \note[item]{dźwigary należy dostarczyć zgodnie z kolejnością montażu - bez sensu}
-    \begin{equation}\label{eq:Order}
-     S_{i+1} \ge S_i , i = 1,2,...,m-1
-    \end{equation}    
+%     \item dźwigary należy dostarczyć zgodnie z kolejnością montażu 
+%     \note[item]{dźwigary należy dostarczyć zgodnie z kolejnością montażu - bez sensu}
+%     \begin{equation}\label{eq:Order}
+%      S_{i+1} \ge S_i , i = 1,2,...,m-1
+%     \end{equation}    
  \end{itemize}
  \end{block}
 \end{frame}
@@ -131,8 +131,8 @@ Wrocławskiego}
        \item jednocześnie pojazd może przewozić tylko jeden dźwigar
      \begin{equation}\label{eq:OneVehicle}
      \begin{split}
-      \forall B_i, B_j \in \textbf{B}, S_i - r_i - t_i - z_i \ge S_j - r_j - t_j - z_j
-      \\ \   \vee S_j - r_j - t_j - z_j \ge S_i - r_i - t_i - z_i
+      \forall B_i, B_j \in \textbf{B}, S_i \ge S_j + r_j + p_j
+      \\ \   \vee S_j \ge S_i + t_i + p_i
      \end{split}
      \end{equation}
       \note[item]{jednocześnie pojazd może przewozić tylko jeden dźwigar - nie rozumiem równania}
@@ -211,47 +211,66 @@ Wrocławskiego}
  
 \end{frame}
 
+% ***************************************************** Wpływ ograniczeń na złożoność czasową *********************************************************************
+\section{Wpływ ograniczeń na złożoność czasową}
+
+\begin{frame}
+ \frametitle{ Złożoność czasowa  nie zmienia się gdy:}
+ \begin{itemize}
+  \item dla każdego dźwigara mamy tylko jedną czynnosć $j_i$
+  \item żądane czasy najwcześniejszego dostarczenia dźwigara $ e_i $ są równe 0
+  \item $d_i$ = $e_i$
+  \item okna czasowe są rozłączne
+ \end{itemize}
+ 
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{Złożoność czasowa jest wielomianowa}
+ \begin{itemize}
+  \item gdy znamy kolejność dostarczenia dźwigarów
+ \end{itemize}
+ 
+
+\end{frame}
+
 
 % ***************************************************** Algorytm Konstrukcyjny *********************************************************************
 
-% 
-% \section{Algorytm Konstrukcyjny}
-% 
-% \begin{frame}
-% 
-% \frametitle{Algorytm Konstrukcyjny}
-% 
-% \begin{enumerate}
-%  \item Posortować dźwigary zgodnie z najpóźniejszym terminem przywozu
-%  \item Znaleźć podział na bloki dla zadanej kolejności
-%  \item Znaleźć optymalny czas dostawy dla każdego dźwigara
-% \end{enumerate}
-% 
-% \end{frame}
-% 
-% 
-% 
-% \begin{frame}
-% 
-% \frametitle{Podział na bloki}
-% 
-% \end{frame}
-% 
-% 
-% \begin{frame}
-% 
-% \frametitle{Znajdowanie optymalnego czasu}
-% 
-% \end{frame}
-% 
-% 
-% % ***************************************************** Wpływ ograniczeń na złożoność czasową *********************************************************************
-% \section{Wpływ ograniczeń na złożoność czasową}
-% 
-% \begin{frame}
-%  \frametitle{Wpływ ograniczeń na złożoność czasową}
-%  ??????????????????
-% \end{frame}
+
+\section{Algorytm Konstrukcyjny}
+
+\begin{frame}
+
+\frametitle{Algorytm Konstrukcyjny}
+
+\begin{enumerate}
+ \item Posortować dźwigary zgodnie z najpóźniejszym terminem przywozu
+ \item Algorytm przyrostowy
+ \item Próbujemy umieścić $i$-ty dźwigar w okienku
+ \item Jeśli to nie możliwe, kładziemy go zaraz po dźwigarze $i-1$.
+ \item Przesuwamy cały blok w lewo, aż nie znajdziemy minimum
+
+\end{enumerate}
+
+\end{frame}
+
+ \begin{frame}
+ \frametitle{ Znajdowanie optymalnego czasu dla zadanej kolejności}
+ \begin{center}
+  \includegraphics[width=8cm]{Grafika/wykres1.png}
+ \end{center}
+ \end{frame}
+ 
+ \begin{frame}
+ \frametitle{ Znajdowanie optymalnego czasu dla zadanej kolejności }
+ \begin{center}
+  \includegraphics[width=8cm]{Grafika/wykres2.png}
+ \end{center}
+ \end{frame}
+
+
 
 % *************************************************************Algorytm Ewolucyjny **********************************************************************
 
@@ -382,27 +401,13 @@ Dziecko 1: & \_ & {\color{red}2} & \_ & \_ & \_ & {\color{red}6} & {\color{red}7
  \begin{frame}
  \frametitle{ Ewaluacja }
  \begin{itemize}
-  \item Algorytm przyrostowy
-  \item Próbujemy umieścić $i$-ty dźwigar w okienku
-  \item Jeśli to nie możliwe, kładziemy go zaraz po dźwigarze $i-1$.
-  \item Przesuwamy cały blok w lewo, aż nie znajdziemy minimum
+ \item Znaleźć optymalny czas dostawy dla każdego dźwigara przy zadanej kolejności
+ \item Wartością funcki celu jest suma kar za przekroczenie okien czasowych
  \end{itemize}
  
  \end{frame}
  
- \begin{frame}
- \frametitle{ Ewaluacja }
- \begin{center}
-  \includegraphics[width=8cm]{Grafika/wykres1.png}
- \end{center}
- \end{frame}
- 
- \begin{frame}
- \frametitle{ Ewaluacja }
- \begin{center}
-  \includegraphics[width=8cm]{Grafika/wykres2.png}
- \end{center}
- \end{frame}
+
  
  
  \begin{frame}
@@ -414,10 +419,21 @@ Dziecko 1: & \_ & {\color{red}2} & \_ & \_ & \_ & {\color{red}6} & {\color{red}7
 
  \begin{frame}
  \frametitle{ Warunek zakończenia algorytmu }
-Jeżeli przez D populacji nie nastąpi polepszenie funkcji celu zakończ działanie algorytmu
+Jeżeli przez D iteracji nie nastąpi polepszenie funkcji celu zakończ działanie algorytmu
 
 \end{frame}
 
+\begin{frame}
+\frametitle{Bibliografia}
+\begin{thebibliography}{1}
+
+\bibitem{genetic94}
+  C. Y. Lee, J. Y. Chois,
+  \emph{ A Genetic Algorithm for Job Sequencing Problems with Distinct Due Dates and General Early-Tidy Penalty}.
+  1994.
+
+\end{thebibliography}
+\end{frame}
 
 
 

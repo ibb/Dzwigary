@@ -5,9 +5,9 @@
  *      Author: Izabela Biczysko, Krzysztof Piecuch
  */
 
-#include<vector>
-#include<iostream>
-#include<algorithm>
+#include <vector>
+#include <iostream>
+#include <algorithm>
 #include "Population.hpp"
 #include "randUtils.hpp"
 
