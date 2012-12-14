@@ -10,14 +10,19 @@
 #include "Population.hpp"
 
 Environment::Environment(GirderSchedule *GS, int populationSize,
-		int maxIteration, double mutateRate, Initialisation m) {
+		int maxIteration, double mutateRate, Initialisation m,
+		double endDifference, int endIteration) {
 	this->GS = GS;
 	this->populationSize = populationSize;
 	this->maxIteration = maxIteration;
-	this->iterationNumber = 0;
+	this->iterationNumber = 1;
 	this->mutateRate = mutateRate;
 	this->minValue = -1;
 	this->initialisation = m;
+	this->endDifference = endDifference;
+	this->endIteration = endIteration;
+	this->minEndIterationsValue = -1;
+
 
 	assert(populationSize % 2 == 0);
 }
@@ -27,6 +32,9 @@ int Environment::individualLength() {
 
 void Environment::run() {
 	Population *population = new Population(this, populationSize,this->initialisation);
+	population->evaluate();
+	this->minEndIterationsValue = population->getMin();
+	this->minValue = population->getMin();
 	while (terminationCondition()) {
 		population->crossover();
 		population->mutate(this->mutateRate);
@@ -35,7 +43,7 @@ void Environment::run() {
 		population->replace();
 		this->iterationNumber++;
 		double minVal = population->getMin();
-		if (this->minValue == -1 || minVal < this->minValue) {
+		if (minVal < this->minValue) {
 			this->minValue = minVal;
 		}
 
@@ -44,7 +52,15 @@ void Environment::run() {
 }
 
 bool Environment::terminationCondition() {
-	return iterationNumber < maxIteration;
+	if(this->iterationNumber % this->endIteration == 0)
+	{
+		if((this->minEndIterationsValue - this->minValue) < this->endDifference){
+			return false;
+		}
+		this->minEndIterationsValue = this->minValue;
+		return true;
+
+	}
 }
 
 GirderSchedule * Environment::getGirderSchedule() {
