@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 			srand(time(NULL));
 			GirderSchedule *GS = new GirderSchedule(argv[1]);
 
-			Environment *env = new Environment(GS, 1000, 100, 0.1, SPECIALIND, 0.1, 100);
+			Environment *env = new Environment(GS, 100, 10000, 0.1, SPECIALIND, 0.1, 100);
 			//env->random(100000);
 			env->run();
 		}

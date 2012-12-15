@@ -72,16 +72,19 @@ void Environment::run() {
 	}
 	cout << this->minValue << endl;
 	cout << this->iterationNumber << endl;
-	this->stats.n = this->iterationNumber;
+
+
+	this->stats.n = this->iterationNumber-2;
 
 	this->stats.max = this->stats.worst[0];
-	for(int i=1; i< this->iterationNumber;i++)
+	for(int i=1; i< this->iterationNumber-1;i++)
 	{
-		if(this->stats.max > this->stats.worst[i]){
+		if(this->stats.max < this->stats.worst[i]){
 			this->stats.max = this->stats.worst[i];
 		}
 
 	}
+	cout << this->stats.max << endl;
 	makePlot(this->stats, "plik.tex");
 }
 
