@@ -9,6 +9,7 @@
 #include "Environment.hpp"
 #include "Population.hpp"
 
+
 Environment::Environment(GirderSchedule *GS, int populationSize,
 		int maxIteration, double mutateRate, Initialisation m,
 		double endDifference, int endIteration) {
@@ -22,6 +23,17 @@ Environment::Environment(GirderSchedule *GS, int populationSize,
 	this->endDifference = endDifference;
 	this->endIteration = endIteration;
 	this->minEndIterationsValue = -1;
+
+	this->stats.maxIteration = this->maxIteration;
+	this->stats.populationSize = this->populationSize;
+	this->stats.mutateRate = this->mutateRate;
+	if(m == RANDOM){
+		this->stats.initialisation = "RANDOM";
+	}
+	else{
+		this->stats.initialisation = "SPECIALIND";
+	}
+
 
 
 	assert(populationSize % 2 == 0);
@@ -40,15 +52,26 @@ void Environment::run() {
 		population->mutate(this->mutateRate);
 		population->localSearch();
 		population->evaluate();
+
+		this->stats.average[this->iterationNumber-1] = population->getMean();
+		this->stats.best[this->iterationNumber-1] = population->getMin();
+		this->stats.worst[this->iterationNumber-1] = population->getMax();
+//		cout << "stats" << endl;
+//		cout << this->stats.average[this->iterationNumber] << endl;
+//		cout << this->stats.best[this->iterationNumber] << endl;
+//		cout << this->stats.worst[this->iterationNumber] << endl;
+
 		population->replace();
 		this->iterationNumber++;
 		double minVal = population->getMin();
+		cout << minVal << endl;
 		if (minVal < this->minValue) {
 			this->minValue = minVal;
 		}
 
 	}
 	cout << this->minValue << endl;
+	makePlot(this->stats, "plik.tex");
 }
 
 bool Environment::terminationCondition() {
@@ -58,9 +81,12 @@ bool Environment::terminationCondition() {
 			return false;
 		}
 		this->minEndIterationsValue = this->minValue;
-		return true;
+
 
 	}
+	else if(this->iterationNumber > maxIteration)
+		return false;
+	return true;
 }
 
 GirderSchedule * Environment::getGirderSchedule() {

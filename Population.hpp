@@ -26,6 +26,8 @@ public:
 	void replace();
 	void localSearch();
 	double getMin();
+	double getMax();
+	double getMean();
 	void print();
 
 

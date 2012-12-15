@@ -6,6 +6,7 @@
  */
 
 #include "GirderSchedule.hpp"
+#include "plot.hpp"
 
 #ifndef ENVIRONMENT_HPP_
 #define ENVIRONMENT_HPP_
@@ -26,6 +27,7 @@ private:
 	double endDifference;
 	int endIteration;
 	double minEndIterationsValue;
+	Statistic stats;
 public:
 	Environment(GirderSchedule *GS, int populationSize, int maxIteration,
 			double mutateRate, Initialisation m, double endDifference,

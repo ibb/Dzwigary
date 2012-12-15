@@ -8,6 +8,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <numeric>
 #include "Population.hpp"
 #include "randUtils.hpp"
 
@@ -86,6 +87,19 @@ void Population::localSearch(){
 
 double Population::getMin(){
 	return min_element(individuals.begin(), individuals.end())->getValue();
+}
+
+double Population::getMax(){
+	return max_element(individuals.begin(), individuals.end())->getValue();
+}
+
+double Population::getMean(){
+	vector<Individual>::iterator it;
+	int sum = 0;
+	for(it= individuals.begin(); it!= individuals.end(); it++){
+		sum += it-> getValue();
+	}
+	return (double)sum/this->size;
 }
 
 void Population::print() {
