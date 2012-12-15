@@ -38,6 +38,10 @@ bool Individual::operator<(const Individual &a) const{
 
 }
 
+bool Individual::uniqueSol (Individual &i, Individual &j) {
+  return (i.chromosome == j.chromosome);
+}
+
 void Individual::addGene(int girderNum){
 	return this->chromosome.push_back(girderNum);
 	this->value = -1;

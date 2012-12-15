@@ -76,10 +76,8 @@ void Population::replace(){
 	vector<Individual>::iterator it;
 //	cout << "replace" << endl;
 	sort(individuals.begin(), individuals.end());
-//	for(it = individuals.begin(); it!= individuals.end();it++){
-//			cout<< it->getValue() << " ";
-//		}
-//		cout << endl;
+	it = unique(individuals.begin(), individuals.end(), Individual::uniqueSol);
+	individuals.resize(it- individuals.begin(),Individual(this->env));
 	this->size /= 2;
 	individuals.resize(this->size, Individual(this->env));
 }

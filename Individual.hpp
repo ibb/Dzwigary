@@ -35,6 +35,7 @@ public:
 	void localSeach();
 	void print();
 	double getValue(){return this->value;}
+	bool static uniqueSol (Individual &i, Individual &j);
 
 
 };
