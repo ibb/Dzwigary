@@ -119,6 +119,8 @@ void Individual::localSeach()
 	Individual *in = new Individual(this->env,order);
 	in->addGene(this->chromosome[0]);
 
+//	cout << "local" << endl;
+//	cout << this->getValue() << endl;
 	double min;
 	vector<int> minChromosom;
 	minChromosom.resize(this->length);
@@ -139,9 +141,14 @@ void Individual::localSeach()
 		}
 
 	}
-	this->chromosome.clear();
-	this->chromosome = minChromosom;
-	this->value = min;
+	if(min < this->value )
+	{
+		this->chromosome.clear();
+		this->chromosome = minChromosom;
+		this->value = min;
+//		cout <<min << endl;
+	}
+
 
 }
 

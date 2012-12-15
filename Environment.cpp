@@ -50,8 +50,8 @@ void Environment::run() {
 	while (terminationCondition()) {
 		population->crossover();
 		population->mutate(this->mutateRate);
-		population->localSearch();
 		population->evaluate();
+		population->localSearch();
 
 		this->stats.average[this->iterationNumber-1] = population->getMean();
 		this->stats.best[this->iterationNumber-1] = population->getMin();
@@ -71,7 +71,14 @@ void Environment::run() {
 
 	}
 	cout << this->minValue << endl;
+	cout << this->iterationNumber << endl;
 	makePlot(this->stats, "plik.tex");
+}
+
+void Environment::random(int iter) {
+	Population *population = new Population(this, iter,RANDOM);
+	population->evaluate();
+	cout << population->getMin() << endl;
 }
 
 bool Environment::terminationCondition() {

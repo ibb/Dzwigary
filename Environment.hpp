@@ -35,6 +35,7 @@ public:
 	int individualLength();
 
 	void run();
+	void random(int iter);
 
 	bool terminationCondition();
 	GirderSchedule * getGirderSchedule();

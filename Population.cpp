@@ -40,6 +40,14 @@ void Population::crossover() {
 	vector<int> perm(this->size, 1);
 	vector<vector<int> > res;
 
+//	vector<Individual>::iterator it;
+//    cout << "cross" << endl;
+//		sort(individuals.begin(), individuals.end());
+//		for(it = individuals.begin(); it!= individuals.end();it++){
+//				cout<< it->getValue() << " ";
+//			}
+//			cout << endl;
+
 	randPermutation(perm);
 	for (int i = 0; i < this->size; i += 2) {
 		res = this->individuals[perm[i]].uniformCrossover(&individuals[perm[i + 1]]);
@@ -65,7 +73,13 @@ void Population::mutate(double mutationtRate){
 }
 
 void Population::replace(){
+	vector<Individual>::iterator it;
+//	cout << "replace" << endl;
 	sort(individuals.begin(), individuals.end());
+//	for(it = individuals.begin(); it!= individuals.end();it++){
+//			cout<< it->getValue() << " ";
+//		}
+//		cout << endl;
 	this->size /= 2;
 	individuals.resize(this->size, Individual(this->env));
 }
@@ -82,6 +96,15 @@ void Population::localSearch(){
 	vector<Individual>::iterator  best;
 	best = min_element(individuals.begin(), individuals.end());
 	best->localSeach();
+
+}
+
+void Population::localSearchAll(){
+
+	vector<Individual>::iterator  it;
+	for(it=individuals.begin(); it<individuals.end(); it++){
+		it->localSeach();
+	}
 
 }
 

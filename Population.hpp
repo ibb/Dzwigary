@@ -25,6 +25,7 @@ public:
 	void mutate(double mutationtRate);
 	void replace();
 	void localSearch();
+	void localSearchAll();
 	double getMin();
 	double getMax();
 	double getMean();
